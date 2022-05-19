@@ -4,7 +4,7 @@ let handler = async(m, { conn }) => {
     let kontol = `
 ╭─────[ *_INFORMASI OWNER_* ]─────✧
 ┴
-│ *🎀YUK SALING KENAL SAMA OWNER🎀*
+│ *🎀YUK knalan SAMA OWNER kusus cwek🎀*
 ┬
 ╰──────────···`.trim()
   const button = {
