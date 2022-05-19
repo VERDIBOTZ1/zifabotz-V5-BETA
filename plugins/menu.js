@@ -9,7 +9,7 @@ const groups = chats.filter(v => v.jid.endsWith('g.us'))
 const defaultMenu = {
   before: `
 ╭═══════════════════════⬣
-║╭──❉ 〔⳹ ❋ཻུ۪۪zifabotz⳹ ❋ཻུ۪۪〕 ❉──────
+║╭──❉ 〔⳹ ❋۪verdibotz⳹ ❋ཻུ۪۪〕 ❉──────
 ║│➸Hai, %name!👋
 ║│➸💰Tersisa *%limit Limit*
 ║│➸Role *%role*
@@ -32,7 +32,7 @@ const defaultMenu = {
   body: '║│➸%cmd %islimit %isPremium',
   footer: '*╰───❉*\n',
   after: `
-  ⬣━〔Powered By Rozi〕━⬣
+  ⬣━〔Powered By VERDI〕━⬣
 `,
 }
 let handler = async (m, { conn, usedPrefix: _p, args, command }) => {
@@ -225,7 +225,7 @@ let handler = async (m, { conn, usedPrefix: _p, args, command }) => {
 ║╭──❉ 〔 ⳹ ❋ཻུ۪۪zifabotz⳹ ❋ཻུ۪۪ 〕 ❉────── 
 ║│➸⏰Aktif selama ${uptime}
 ║│➸⚡Baterai ${conn.battery != undefined ? `${conn.battery.value}% ${conn.battery.live ? '🔌 pengisian' : ''}` : 'tidak diketahui'}
-║│➸ *nama sc*: *_zifabotz-V1_*
+║│➸ *nama sc*: *VERDIbotz-V1_*
 ║│➸ *${conn.blocklist.length}* Terblock
 ║│➸ *${Object.entries(global.db.data.chats).filter(chat => chat[1].isBanned).length}* Chat Terbanned
 ║│➸ *${Object.entries(global.db.data.users).filter(user => user[1].banned).length}* Pengguna Terbanned
@@ -260,7 +260,7 @@ _____•••••••••
                                     "rowId": ".jadibot"
                                 }, {
   "title":  "|🙇‍♂️| ❯╾group╼-",
-                                    "description": "bergabung di grub bersama bot zifa",
+                                    "description": "bergabung di grub bersama bot VERDI",
                                     "rowId": ".gcbot"
                                 }, {
   "title":  "|📒| ❯╾biodata owner╼-",
@@ -413,8 +413,8 @@ _____•••••••••
                                 "title": "⟣──────────────❲  All-Menu  ❳──────────────⟢"
                             }, {
                                 "rows": [{
-                                    "title": "|👩‍💻| Owner ZIFABOTZ",
-                                    "description": "pemilik ZIFABOTZ",
+                                    "title": "|👩‍💻| Owner VERDIBOTZ",
+                                    "description": "pemilik VERDIBOTZ",
                                     "rowId": ".owner"
                                 }, {
                                     "title": "|🛠|Status bot",
