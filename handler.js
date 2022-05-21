@@ -479,12 +479,12 @@ ketik *.on delete* untuk mematikan pesan ini
 
 global.dfail = (type, m, conn) => {
   let msg = {
-    rowner: '*LU BUKAN OWNER GW COK🗿*',
-    owner: '*LU BUKAN OWNER GW COK🗿*',
-    premium: '*LU BUKAN MEMBER PREMIUM😑*',
+    rowner: '*LU BUKAN OWNER GW ANJG🗿*',
+    owner: '*EH LU SIAPA LU BUKAN OWNER GW ANJG🗿*',
+    premium: '*LU BUKAN MEMBER PREMIUM AN#🐶*',
     group: '*CUMAN KHUSUS GRUB DOANG😐*',
-    private: '*CHAT PRIBADI AJA😑*',
-    admin: '*LU AJA BUKAN ADMIN🗿*',
+    private: '*CHAT PRIBADI AJA LOL😑*',
+    admin: '*LU AJA BUKAN ADMIN OTAK DI PAKEK🗿*',
     botAdmin: '*BOT AJA BUKAN ADMIN😑*',
     unreg: 'Silahkan daftar untuk menggunakan fitur ini dengan cara mengetik:\n\n#daftar zifa.19',
     nsfw: 'NSFW doesnt active.\nNSFW tidak aktif.'
