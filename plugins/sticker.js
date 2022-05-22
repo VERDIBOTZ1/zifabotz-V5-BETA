@@ -1,68 +1,70 @@
-const { MessageType } = require('@adiwajshing/baileys')
-const { sticker } = require('../lib/sticker')
-const uploadFile = require('../lib/uploadFile')
-const uploadImage = require('../lib/uploadImage')
-let { webp2png } = require('../lib/webp2mp4')
-let fs = require('fs')
-let handler = async (m, { conn, args, usedPrefix, command }) => {
-const ftoko = {
-key: {
-			fromMe: false,
-			participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: "status@broadcast" } : {})
-		},
-		message: {
-			"productMessage": {
-				"product": {
-					"productImage":{
-						"mimetype": "image/jpeg",
-						"jpegThumbnail": fs.readFileSync('./src/RadBotZ.jpg'), //Gambarnye ganti
-					},
-					"title": `Hai ${conn.getName(m.sender)}~`, //Kasih namalu 
-					"description": `BUAT SENDIRI LAIN KALI ANJG`, 
-					"currencyCode": "HALAL",
-					"priceAmount1000": "500000",
-					"retailerId": `ppk`,
-					"productImageCount": 1
-				},
-				    "businessOwnerJid": `628162633549@s.whatsapp.net`
-		}
-	}
-}
-  let stiker = false
-  try {
+const fs = require('fs')
+const ffmpeg = require('fluent-ffmpeg')
+
+let handler = async (m, { conn, usedPrefix, command }) => {
+    gokil = `balas media dengan perintah ${usedPrefix + command}`
     let q = m.quoted ? m.quoted : m
     let mime = (q.msg || q).mimetype || ''
-    if (/webp/.test(mime)) {
-      let img = await q.download()
-      let out = await webp2png(img)
-      if (!img) throw `balas stiker dengan perintah ${usedPrefix + command} <packname>|<author>`
-      stiker = await sticker(0, out, global.packname, global.author)
-    } else if (/image/.test(mime)) {
-      let img = await q.download()
-      let link = await uploadImage(img)
-      if (!img) throw `balas gambar dengan perintah ${usedPrefix + command} <packname>|<author>`
-      stiker = await sticker(0, link, global.packname, global.author)
+    if (/image/.test(mime)) {
+        const encmedia = m.quoted ? m.quoted.fakeObj : m
+        const media = await conn.downloadAndSaveMediaMessage(encmedia)
+        const ran = getRandom('.webp')
+        await ffmpeg(`./${media}`)
+            .input(media)
+            .on('start', function (cmd) {
+                console.log(`Started : ${cmd}`)
+            })
+            .on('error', function (e) {
+                console.log(`Error : ${e}`)
+                fs.unlinkSync(media)
+                m.reply('Error!')
+            })
+            .on('end', function () {
+                console.log('Finish')
+                buff = fs.readFileSync(ran)
+                conn.sendMessage(m.chat, buff, 'stickerMessage', { quoted: m })
+                fs.unlinkSync(media)
+                fs.unlinkSync(ran)
+            })
+            .addOutputOptions([`-vcodec`, `libwebp`, `-vf`, `scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
+            .toFormat('webp')
+            .save(ran)
     } else if (/video/.test(mime)) {
-      if ((q.msg || q).seconds > 11) return m.reply('Maksimal 10 detik!')
-      let img = await q.download()
-      let link = await uploadFile(img)
-      if (!img) throw `balas video dengan perintah ${usedPrefix + command} <packname>|<author>`
-      stiker = await sticker(0, link, global.packname, global.author)
-    } else if (args[0]) {
-      if (isUrl(args[0])) stiker = await sticker(false, args[0], global.packname, global.author)
-      else return m.reply('URL tidak valid!')
-    }
-  } finally {
-    if (stiker) await conn.sendMessage(m.chat, stiker, MessageType.sticker, { quoted: ftoko})
-    else throw `Gagal${m.isGroup ? ', balas gambarnya!' : ''}`
-  }
+        if ((q.msg || q).seconds > 11) throw `_*Maksimal 10 detik! Ubah menjadi gif terlebih dahulu*_`
+        const encmedia = m.quoted ? m.quoted.fakeObj : m
+        const media = await conn.downloadAndSaveMediaMessage(encmedia)
+        const ran = getRandom('.webp')
+        await ffmpeg(`./${media}`)
+            .inputFormat(media.split('.')[1])
+            .on('start', function (cmd) {
+                console.log(`Started : ${cmd}`)
+            })
+            .on('error', function (e) {
+                console.log(`Error : ${e}`)
+                fs.unlinkSync(media)
+                tipe = media.endsWith('.mp4') ? 'video' : 'gif'
+                m.reply(`_*Gagal, pada saat mengkonversi ${tipe} ke stiker*_`)
+            })
+            .on('end', function () {
+                console.log('Finish')
+                buff = fs.readFileSync(ran)
+                conn.sendMessage(m.chat, buff, 'stickerMessage', { quoted: m })
+                fs.unlinkSync(media)
+                fs.unlinkSync(ran)
+            })
+            .addOutputOptions([`-vcodec`, `libwebp`, `-vf`, `scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
+            .toFormat('webp')
+            .save(ran)
+    } else throw gokil
 }
-handler.help = ['stiker ', 'stiker <url>']
+handler.help = ['stiker2']
 handler.tags = ['sticker']
-handler.command = /^s(tic?ker)?(gif)?(wm)?$/i
+handler.command = /^(s(t|k|tic?ker)?2)$/i
+
+handler.disabled = true
 
 module.exports = handler
 
-const isUrl = (text) => {
-  return text.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)(jpe?g|gif|png)/, 'gi'))
+const getRandom = (ext) => {
+    return `${Math.floor(Math.random() * 10000)}${ext}`
 }
